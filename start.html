@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafetyAll - Выбор языка</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/css2">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Сброс стилей */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Oswald', sans-serif;
+            /* Темный фон, имитирующий глубокий космос или темную тему интерфейса */
+            background: radial-gradient(circle at center, #0f1016 0%, #050507 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Контейнер-карточка по центру */
+        .menu-card {
+            background-color: rgba(18, 20, 28, 0.95); /* Очень темный фон карточки */
+            padding: 60px 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Тонкая рамка */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); /* Тень для объема */
+            position: relative;
+        }
+
+        /* Заголовок SafetyAll */
+        .main-title {
+            font-size: 80px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #ffffff;
+            /* Эффект свечения как на скрине (бело-фиолетовый ореол) */
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3),
+                         0 0 40px rgba(100, 100, 255, 0.2);
+            line-height: 1;
+        }
+
+        /* Подзаголовок (онлайн платформа...) */
+        .subtitle {
+            font-size: 18px;
+            font-weight: 300;
+            color: #b0b5c0; /* Светло-серый цвет текста */
+            margin-bottom: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Текст "Выберите язык" */
+        .lang-label {
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: #58c7fa; /* Голубой акцент, похожий на цвет кнопок */
+            margin-bottom: 20px;
+            letter-spacing: 1.5px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Декоративная линия под "Выберите язык" */
+        .lang-label::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: #58c7fa;
+            margin: 5px auto 0;
+        }
+
+        /* Контейнер кнопок */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Стили кнопок */
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 15px 40px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            min-width: 180px;
+            cursor: pointer;
+        }
+
+        /* Стиль кнопки (как на скрине - с голубой рамкой) */
+        .btn-primary {
+            background-color: transparent;
+            border: 1px solid #00d4ff; /* Яркий циановый цвет */
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Адаптив для мобильных устройств */
+        @media (max-width: 500px) {
+            .main-title {
+                font-size: 50px;
+            }
+            .subtitle {
+                font-size: 14px;
+            }
+            .menu-card {
+                padding: 40px 20px;
+            }
+            .btn {
+                width: 100%; /* Кнопки на всю ширину на телефоне */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-card">
+        <h1 class="main-title">SAFETYALL</h1>
+        
+        <p class="subtitle">
+            Онлайн платформа по обучению персонала
+        </p>
+
+        <div class="lang-label">Выберите свой язык</div>
+
+        <div class="buttons-container">
+            <a href="https://safetyall.github.io/ru/" class="btn btn-primary">
+                Русский
+            </a>
+            
+            <a href="https://safetyall.github.io/kz/" class="btn btn-primary">
+                Қазақша
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
