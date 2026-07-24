@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safety ALL - Обучающая платформа</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Премиальный шрифтовой стеки Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    /* --- НАСТРОЙКИ ДИЗАЙНА: CORPORATE PREMIUM 3D UI --- */
+    :root {
+        /* Основная корпоративная палитра */
+        --bg-dark-1: #223341;
+        --bg-dark-2: #2F4354;
+        --bg-dark-3: #33485A;
+        
+        /* Фирменные акценты */
+        --accent-teal-main: #4FC5B8;
+        --accent-teal-dark: #45C0AF;
+        --accent-orange: #E98A42;
+        --accent-yellow: #F2CB4E;
+        
+        /* Типографика */
+        --text-primary: #FFFFFF;
+        --text-secondary: #EAEAEA;
+        --text-muted: #8E9EA8;
+        
+        /* Glassmorphism параметры */
+        --glass-bg: rgba(47, 67, 84, 0.4);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --glass-border-highlight: rgba(255, 255, 255, 0.25);
+        --shadow-soft: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* --- ФОН И СЛОИ (Многослойная композиция) --- */
+    html {
+        background-color: var(--bg-dark-1);
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        color: var(--text-primary);
+        overflow-x: hidden;
+        
+        /* Слои 1-3: Глубокий градиент и мягкие световые пятна */
+        background-image: 
+            radial-gradient(circle at 15% 15%, rgba(79, 197, 184, 0.08) 0%, transparent 45%),
+            radial-gradient(circle at 85% 85%, rgba(233, 138, 66, 0.05) 0%, transparent 45%),
+            linear-gradient(160deg, var(--bg-dark-3) 0%, var(--bg-dark-1) 100%);
+        background-attachment: fixed;
+    }
+
+    /* Слой 4: Декоративная промышленная сетка (Grid) */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 40px 40px;
+        mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 80%);
+        -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 80%);
+        pointer-events: none;
+        z-index: -2;
+    }
+
+    /* Слой 5: Premium Noise (шум) для фактуры матового пластика/металла */
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.04"/></svg>');
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    /* Утилиты */
+    .hidden { display: none !important; }
+    
+    /* Плавная анимация появления (Fade In + Slide Up) */
+    .fade-in { 
+        animation: premiumFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+    }
+
+    @keyframes premiumFadeIn {
+        0% { 
+            opacity: 0; 
+            transform: translateY(40px) scale(0.97); 
+            filter: blur(10px);
+        }
+        100% { 
+            opacity: 1; 
+            transform: translateY(0) scale(1); 
+            filter: blur(0);
+        }
+    }
+
+    /* --- СТРУКТУРА ЭКРАНОВ И ВОЗДУХ --- */
+    .screen {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 40px 20px;
+        box-sizing: border-box;
+        position: relative;
+    }
+
+    /* Слои 6-7: Плавающие световые блики (Floating Orbs) на заднем плане */
+    .screen::before, .screen::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(90px);
+        z-index: 1; 
+        pointer-events: none;
+        animation: floatOrb 12s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .screen::before {
+        width: 350px; height: 350px;
+        background: radial-gradient(circle, rgba(79, 197, 184, 0.12) 0%, transparent 70%);
+        top: 5%; left: 10%;
+    }
+    .screen::after {
+        width: 450px; height: 450px;
+        background: radial-gradient(circle, rgba(242, 203, 78, 0.06) 0%, transparent 70%);
+        bottom: 5%; right: 10%;
+        animation-delay: -4s;
+    }
+
+    @keyframes floatOrb {
+        0% { transform: translate(0, 0) scale(1); }
+        100% { transform: translate(40px, 30px) scale(1.1); }
+    }
+
+    /* --- КАРТОЧКИ (Floating Glass Cards) --- */
+    .glass-card {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+        backdrop-filter: blur(28px);
+        -webkit-backdrop-filter: blur(28px);
+        
+        /* Многослойные границы для имитации скошенного стекла (Bevel) */
+        border: 1px solid var(--glass-border);
+        border-top: 1px solid var(--glass-border-highlight);
+        border-left: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 28px;
+        
+        padding: 60px 48px;
+        text-align: center;
+        max-width: 440px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        
+        box-shadow: 
+            var(--shadow-soft), 
+            inset 0 1px 1px rgba(255,255,255,0.1),
+            0 0 40px rgba(79, 197, 184, 0.03);
+            
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+    }
+
+    .glass-card:hover {
+        transform: translateY(-8px) scale(1.01);
+        box-shadow: 
+            0 40px 80px -15px rgba(0, 0, 0, 0.6), 
+            inset 0 1px 1px rgba(255,255,255,0.2),
+            0 0 60px rgba(79, 197, 184, 0.08);
+    }
+
+    /* --- ТИПОГРАФИКА --- */
+    h1 {
+        font-size: 2.75rem;
+        margin: 0;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+        background: linear-gradient(180deg, #FFFFFF 0%, #C4D3DF 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 12px;
+    }
+
+    .subtitle-blue {
+        color: var(--accent-teal-main);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 45px;
+        display: block;
+        text-shadow: 0 0 15px rgba(79, 197, 184, 0.3);
+    }
+
+    /* --- ПОЛЯ ВВОДА --- */
+    input[type="password"] {
+        width: 100%;
+        padding: 20px;
+        margin-bottom: 24px;
+        box-sizing: border-box;
+        background: rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 500;
+        text-align: center;
+        outline: none;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    input[type="password"]::placeholder {
+        color: var(--text-muted);
+        font-weight: 400;
+    }
+
+    input[type="password"]:focus {
+        background: rgba(0, 0, 0, 0.25);
+        border-color: var(--accent-teal-main);
+        box-shadow: 
+            0 0 0 4px rgba(79, 197, 184, 0.15), 
+            inset 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    /* --- КНОПКИ (Premium UI) --- */
+    .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 18px;
+        margin-bottom: 16px;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border-radius: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        color: var(--text-primary);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    /* Основная кнопка */
+    .btn-primary {
+        background: linear-gradient(135deg, var(--accent-teal-main) 0%, var(--accent-teal-dark) 100%);
+        color: #111B22;
+        box-shadow: 
+            0 8px 16px -4px rgba(79, 197, 184, 0.4), 
+            inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    }
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 
+            0 14px 24px -6px rgba(79, 197, 184, 0.6), 
+            inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    }
+    .btn-primary:active { transform: translateY(-1px); }
+
+    /* Кнопки языков */
+    .btn-lang {
+        background: rgba(34, 51, 65, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        color: var(--text-secondary);
+        font-weight: 500;
+        justify-content: flex-start;
+        padding-left: 35px;
+        box-shadow: inset 0 1px 2px rgba(255,255,255,0.02), 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn-lang:hover {
+        background: rgba(47, 67, 84, 0.9);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+        box-shadow: inset 0 1px 2px rgba(255,255,255,0.05), 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .flag-icon {
+        margin-right: 18px;
+        font-size: 1.3rem;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+
+    /* 3D Стеклянные кнопки меню */
+    .btn-neon-3d {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-top-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(16px);
+        box-shadow: 
+            inset 0 1px 1px rgba(255, 255, 255, 0.1), 
+            0 8px 20px rgba(0, 0, 0, 0.25);
+        color: var(--text-primary);
+    }
+
+    .btn-neon-3d:hover {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+        border-color: var(--accent-teal-main);
+        transform: translateY(-3px);
+        box-shadow: 
+            inset 0 1px 1px rgba(255, 255, 255, 0.2), 
+            0 12px 28px rgba(0, 0, 0, 0.4), 
+            0 0 20px rgba(79, 197, 184, 0.15);
+    }
+
+    /* Эффект блика на кнопках */
+    .btn-neon-3d::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 50%; height: 100%;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+        transform: skewX(-20deg);
+        transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-neon-3d:hover::before {
+        left: 150%;
+    }
+
+    /* Второстепенная кнопка (Outline) */
+    .btn-outline {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+    .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: var(--text-primary);
+        color: var(--text-primary);
+    }
+
+    /* Сообщение об ошибке */
+    .error-msg {
+        background: rgba(233, 138, 66, 0.1);
+        border: 1px solid rgba(233, 138, 66, 0.25);
+        color: var(--accent-orange);
+        padding: 12px;
+        border-radius: 12px;
+        margin-top: 15px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: none;
+        animation: premiumFadeIn 0.3s ease forwards;
+    }
+
+    /* --- БЛОКИ КАТЕГОРИЙ --- */
+    .menu-section {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 24px;
+        padding: 35px 24px 24px;
+        margin-bottom: 30px;
+        position: relative;
+        box-shadow: 
+            inset 0 1px 2px rgba(255, 255, 255, 0.02), 
+            0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.4s ease;
+    }
+
+    .menu-section:hover {
+        background: rgba(255, 255, 255, 0.035);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Заголовки блоков */
+    .section-heading {
+        position: absolute;
+        top: -16px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(34, 51, 65, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        color: var(--accent-teal-main);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-weight: 700;
+        white-space: nowrap;
+        z-index: 10;
+    }
+
+    /* --- КОНТЕЙНЕР ПРЕЗЕНТАЦИЙ (PDF) --- */
+    .pdf-container-wrapper {
+        width: 95%;
+        max-width: 1100px;
+        height: 85vh;
+        background: rgba(34, 51, 65, 0.6);
+        backdrop-filter: blur(40px);
+        -webkit-backdrop-filter: blur(40px);
+        border-radius: 28px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 
+            0 40px 100px rgba(0, 0, 0, 0.7), 
+            inset 0 1px 1px rgba(255,255,255,0.2);
+        border: 1px solid var(--glass-border);
+        border-top: 1px solid var(--glass-border-highlight);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pdf-header {
+        padding: 18px 30px;
+        background: rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        z-index: 10;
+    }
+
+    .pdf-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: var(--text-primary);
+    }
+
+    .close-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+        padding: 8px 24px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .close-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--text-primary);
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .iframe-holder {
+        flex-grow: 1;
+        position: relative;
+        background: #000;
+    }
+
+    .iframe-holder iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .blocker {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 80px;
+        height: 80px;
+        background: transparent;
+        z-index: 100;
+    }
+
+</style>
+</head>
+<body>
+
+    <div id="login-screen" class="screen">
+        <div class="glass-card fade-in">
+            <h1>Safety ALL</h1>
+            <span class="subtitle-blue">ОБУЧАЮЩАЯ ПЛАТФОРМА</span>
+            
+            <div style="margin-top: 20px;">
+                <input type="password" id="passwordInput" placeholder="ВВЕДИТЕ ПАРОЛЬ">
+                <button class="btn btn-primary" onclick="login()">ВОЙТИ</button>
+            </div>
+            <div id="errorMsg" class="error-msg">Неверный пароль</div>
+        </div>
+    </div>
+
+    <div id="lang-screen" class="screen hidden">
+        <div class="glass-card fade-in">
+            <h1>ЯЗЫК / ТІЛ</h1>
+            <span class="subtitle-blue">ВЫБЕРИТЕ ИНТЕРФЕЙС</span>
+            
+            <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 5px;">
+                <button class="btn btn-lang" onclick="selectLanguage('ru')">
+                    <span class="flag-icon">🇷🇺</span> РУССКИЙ ЯЗЫК
+                </button>
+                <button class="btn btn-lang" onclick="selectLanguage('kz')">
+                    <span class="flag-icon">🇰🇿</span> ҚАЗАҚ ТІЛІ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu-screen" class="screen hidden">
+        <div class="glass-card fade-in" style="max-width: 500px;">
+            <h1 id="menuTitle">МАТЕРИАЛЫ</h1>
+            <span id="menuSubtitle" class="subtitle-blue" style="margin-bottom: 50px;">ВЫБЕРИТЕ ФОРМАТ</span>
+            
+            <div style="margin-top: 30px;">
+                
+                <div class="menu-section">
+                    <div class="section-heading" id="headingPres">СМОТРЕТЬ ПРЕЗЕНТАЦИЮ</div>
+                    <button id="btnPresentation" class="btn btn-neon-3d" onclick="openPdfViewer()">
+                        СМОТРЕТЬ ПРЕЗЕНТАЦИЮ
+                    </button>
+                </div>
+
+                <div class="menu-section" style="animation-delay: 0.1s; margin-top: 40px;">
+                    <div class="section-heading" id="headingAI">ОБУЧЕНИЕ ПРИ ПОМОЩИ ИИ</div>
+                    
+                    <a id="btnAiLink" href="https://notebooklm.google.com/notebook/8c87d4fd-dea3-46de-b6d8-5cda56e6a4aa" 
+                       target="_blank" 
+                       class="btn btn-neon-3d">
+                       ОБУЧЕНИЕ ПРИ ПОМОЩИ ИИ
+                    </a>
+
+                    <a id="btnAiVideo" href="" 
+                       target="_blank" 
+                       class="btn btn-neon-3d" style="margin-top: 15px; font-size: 0.95rem;">
+                       КАК ПОЛЬЗОВАТЬСЯ ОБУЧЕНИЕМ ИИ
+                    </a>
+                </div>
+
+                <button id="changeLangBtn" class="btn btn-outline" style="margin-top: 30px;" onclick="returnToLang()">
+                    СМЕНИТЬ ЯЗЫК
+                </button>
+            </div>
+            
+            <div style="margin-top: 25px; font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">
+                Safety ALL © 2026
+            </div>
+        </div>
+    </div>
+
+    <div id="pdf-screen" class="screen hidden">
+        <div class="pdf-container-wrapper fade-in">
+            <div class="pdf-header">
+                <span class="pdf-title" id="pdfTitle">Электробезопасность</span>
+                <button class="close-btn" id="btnClosePdf" onclick="closePdfViewer()">Закрыть</button>
+            </div>
+            
+            <div class="iframe-holder">
+                <iframe id="presentation-frame" allow="autoplay"></iframe>
+                <div class="blocker"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // ===============================================
+    // НАСТРОЙКИ (Сохранены твои оригинальные данные)
+    // ===============================================
+    const CONFIG = {
+        password: "ELsafetyALL2077",
+        linkRu: "https://drive.google.com/file/d/1FAYUCg3iV8hld4mobKcb1bGJt5mKCqQs/preview",
+        linkKz: "https://drive.google.com/file/d/1jjnedTAtONIpW9l5VPndgr87g_SCkfuM/preview",
+        // Ссылка на видео инструкцию
+        videoLink: "https://drive.google.com/file/d/1IkE_xSs4HJyKseR1KXnuUzM9_G_EDp/view?usp=sharing"
+    };
+
+    // Элементы экранов
+    const loginScreen = document.getElementById('login-screen');
+    const langScreen = document.getElementById('lang-screen');
+    const menuScreen = document.getElementById('menu-screen');
+    const pdfScreen = document.getElementById('pdf-screen');
+    
+    // Элементы управления
+    const passInput = document.getElementById('passwordInput');
+    const errorMsg = document.getElementById('errorMsg');
+    const pdfFrame = document.getElementById('presentation-frame');
+    
+    // Элементы для перевода (текстовые)
+    const changeLangBtn = document.getElementById('changeLangBtn');
+    const menuTitle = document.getElementById('menuTitle');
+    const menuSubtitle = document.getElementById('menuSubtitle');
+    const btnPresentation = document.getElementById('btnPresentation');
+    const btnAiLink = document.getElementById('btnAiLink');
+    
+    // НОВЫЕ элементы для перевода
+    const headingPres = document.getElementById('headingPres');
+    const headingAI = document.getElementById('headingAI');
+    const btnAiVideo = document.getElementById('btnAiVideo');
+    const pdfTitle = document.getElementById('pdfTitle');
+    const btnClosePdf = document.getElementById('btnClosePdf');
+
+
+    let currentPdfLink = "";
+
+    // Инициализация: установка ссылки на видео
+    btnAiVideo.href = CONFIG.videoLink;
+
+
+    // 1. Вход
+    function login() {
+        if (passInput.value === CONFIG.password) {
+            loginScreen.classList.add('hidden');
+            langScreen.classList.remove('hidden');
+        } else {
+            showError();
+        }
+    }
+
+    // 2. Выбор языка и перевод интерфейса
+    function selectLanguage(lang) {
+        if (lang === 'kz') {
+            currentPdfLink = CONFIG.linkKz;
+            
+            // Перевод на Казахский
+            menuTitle.innerText = "МАТЕРИАЛДАР";
+            menuSubtitle.innerText = "ФОРМАТТЫ ТАҢДАҢЫЗ";
+            
+            headingPres.innerText = "ПРЕЗЕНТАЦИЯНЫ ҚАРАУ";
+            btnPresentation.innerText = "ПРЕЗЕНТАЦИЯНЫ ҚАРАУ";
+            
+            headingAI.innerText = "ЖИ-МЕН ОҚЫТУ";
+            btnAiLink.innerText = "ЖАСАНДЫ ИНТЕЛЛЕКТПЕН ОҚУ";
+            btnAiVideo.innerText = "ЖИ ОҚЫТУДЫ ҚАЛАЙ ҚОЛДАНУ КЕРЕК";
+            
+            changeLangBtn.innerText = "ТІЛДІ АУЫСТЫРУ";
+            pdfTitle.innerText = "Электр қауіпсіздігі";
+            btnClosePdf.innerText = "Жабу";
+            
+        } else {
+            currentPdfLink = CONFIG.linkRu;
+            
+            // Перевод на Русский (возврат)
+            menuTitle.innerText = "МАТЕРИАЛЫ";
+            menuSubtitle.innerText = "ВЫБЕРИТЕ ФОРМАТ";
+            
+            headingPres.innerText = "СМОТРЕТЬ ПРЕЗЕНТАЦИЮ";
+            btnPresentation.innerText = "СМОТРЕТЬ ПРЕЗЕНТАЦИЮ";
+
+            headingAI.innerText = "ОБУЧЕНИЕ ПРИ ПОМОЩИ ИИ";
+            btnAiLink.innerText = "ОБУЧЕНИЕ ПРИ ПОМОЩИ ИИ";
+            btnAiVideo.innerText = "КАК ПОЛЬЗОВАТЬСЯ ОБУЧЕНИЕМ ИИ";
+            
+            changeLangBtn.innerText = "СМЕНИТЬ ЯЗЫК";
+            pdfTitle.innerText = "Электробезопасность";
+            btnClosePdf.innerText = "Закрыть";
+        }
+        
+        langScreen.classList.add('hidden');
+        menuScreen.classList.remove('hidden');
+    }
+
+    // 3. Вернуться к выбору языка
+    function returnToLang() {
+        menuScreen.classList.add('hidden');
+        langScreen.classList.remove('hidden');
+        // Перезапуск анимации
+        const card = langScreen.querySelector('.glass-card');
+        card.classList.remove('fade-in');
+        void card.offsetWidth; 
+        card.classList.add('fade-in');
+    }
+
+    passInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') login();
+    });
+
+    function showError() {
+        errorMsg.style.display = 'block';
+        passInput.style.borderColor = 'var(--accent-orange)';
+        passInput.value = '';
+        setTimeout(() => {
+            passInput.style.borderColor = 'rgba(255,255,255,0.08)';
+        }, 2000);
+    }
+
+    function openPdfViewer() {
+        pdfFrame.src = currentPdfLink;
+        menuScreen.classList.add('hidden');
+        pdfScreen.classList.remove('hidden');
+    }
+
+    function closePdfViewer() {
+        pdfScreen.classList.add('hidden');
+        menuScreen.classList.remove('hidden');
+        pdfFrame.src = "";
+    }
+</script>
+
+</body>
+</html>
